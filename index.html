@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projeto Multidisciplinar — Raízes do Nordeste</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header>
+        <div class="container nav-container">
+            <div class="logo nav-item" data-nav="home">
+                <span class="icon-cactus">🌵</span>
+                <div class="logo-text">
+                    <strong>Raízes</strong>
+                    <span>do Nordeste</span>
+                </div>
+            </div>
+            <nav class="main-nav">
+                <button class="nav-item" data-nav="home">Início</button>
+                <button class="nav-item" data-nav="cardapio">Cardápio</button>
+                <button class="nav-item" data-nav="carrinho">🛍️ Carrinho / Pedido</button>
+            </nav>
+            <div class="user-nav">
+                <button id="openLoginModalBtn">⭐ Login</button>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        
+        <section id="homeScreen" class="screen active-screen">
+            <div class="hero">
+                <div class="hero-text">
+                    <span class="badge">DESDE 2010 — O SABOR QUE VEM DA TERRA</span>
+                    <h1>Autêntica <br><em>comida nordestina</em> <br>na sua cidade</h1>
+                    <p>Tapiocas, cuscuz, baião de dois e muito mais. A tradição do sertão chegou perto de você.</p>
+                    <div class="hero-buttons">
+                        <button class="btn-primary nav-item" data-nav="cardapio">Ver Cardápio</button>
+                        <button class="btn-outline" onclick="document.getElementById('openLoginModalBtn').click();">Criar Conta</button>
+                    </div>
+                </div>
+                <div class="hero-image">
+                    <div class="circle-decoration">
+                        <div class="element-3d">🥞</div>
+                        <span class="star-decoration">⭐</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="highlights">
+                <div class="section-title">
+                    <h2>Nossos <em>Destaques</em></h2>
+                    <p>Uma pequena amostra do que te espera</p>
+                </div>
+                <div id="destaquesHome" class="cards-grid"></div>
+            </div>
+        </section>
+
+        <section id="cardapioScreen" class="screen">
+            <div class="menu-header">
+                <h2>Nosso Cardápio</h2>
+                <div class="unit-selector">
+                    <label for="unidadeSelect">Selecione sua unidade física:</label>
+                    <select id="unidadeSelect">
+                        <option value="Recife">Recife - PE</option>
+                        <option value="Caruaru">Caruaru - PE</option>
+                        <option value="São Paulo">São Paulo - SP</option>
+                    </select>
+                </div>
+            </div>
+            <div id="cardapioDinamico" class="cards-grid"></div>
+        </section>
+
+        <section id="carrinhoScreen" class="screen">
+            
+            <div id="cartContent" class="cart-layout">
+                <div class="cart-items-section">
+                    <h2>Seu Carrinho</h2>
+                    <div id="carrinhoLista" class="cart-list-container"></div>
+                </div>
+                <div class="cart-summary">
+                    <h3>Resumo do Pedido</h3>
+                    
+                    <div class="fidelidade-box">
+                        <h4>Programa de Fidelidade</h4>
+                        <p>Seus pontos: <strong id="pontosUsuario">0</strong> pts</p>
+                        <div class="resgate-actions">
+                            <select id="resgateSelect">
+                                <option value="0">-- Selecione um benefício --</option>
+                                <option value="50">Desconto de R$ 5,00 (50 pts)</option>
+                                <option value="100">Desconto de R$ 12,00 (100 pts)</option>
+                                <option value="200">Desconto de R$ 30,00 (200 pts)</option>
+                            </select>
+                            <button id="aplicarDescontoBtn" class="btn-outline btn-small">Resgatar</button>
+                        </div>
+                        <p id="descontoInfo" class="success-msg-inline"></p>
+                    </div>
+
+                    <div id="totalCarrinho" class="totals"></div>
+
+                    <div class="payment-box">
+                        <label for="formaPagamento"><strong>Forma de Pagamento:</strong></label>
+                        <select id="formaPagamento" class="payment-select">
+                            <option value="pix">PIX (QR Code)</option>
+                            <option value="cartao">Cartão de Crédito/Débito</option>
+                            <option value="dinheiro">Dinheiro (Na Retirada)</option>
+                        </select>
+                        <div id="pixContainer" class="pix-area">
+                            <img src="https://api.qrserver.com/v1/create-qr-code/?size=130x130&data=ChavePixRaizesDoNordeste" alt="QR Code PIX">
+                            <p><small>Escaneie para pagar</small></p>
+                        </div>
+                    </div>
+
+                    <button id="finalizarCompraBtn" class="btn-primary w-100" style="margin-top:15px;">Finalizar Pedido</button>
+                </div>
+            </div>
+
+            <div id="statusContent" class="status-container" style="display:none;">
+                <h2>Acompanhamento do Pedido</h2>
+                <p id="statusMsg" class="status-subtext">Processando sua solicitação...</p>
+                
+                <div id="stepperPedido" class="stepper">
+                    <div class="step">
+                        <div class="step-icon">📝</div>
+                        <p>Pedido Recebido</p>
+                    </div>
+                    <div class="step">
+                        <div class="step-icon">🍳</div>
+                        <p>Em Preparação</p>
+                    </div>
+                    <div class="step">
+                        <div class="step-icon">🛍️</div>
+                        <p>Pronto para Retirar</p>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+    </main>
+
+    <div id="lgpdModal" class="lgpd-banner">
+        <div class="lgpd-text">
+            <p>Nós utilizamos cookies e dados pessoais para melhorar sua experiência e oferecer o programa de fidelidade, em conformidade com a LGPD. Saiba mais na nossa <a href="#" id="politicaLink">Política de Privacidade</a>.</p>
+        </div>
+        <div class="lgpd-buttons">
+            <button id="rejeitarCookies" class="btn-outline btn-small">Rejeitar</button>
+            <button id="aceitarCookies" class="btn-primary btn-small">Aceitar Todos</button>
+        </div>
+    </div>
+
+    <div id="loginModal" class="modal-overlay">
+        <div class="modal-content">
+            <span id="closeLoginModal" class="close-btn">&times;</span>
+            <div class="auth-tabs">
+                <button id="tabLogin" style="background: var(--laranja-queimado); color: white;">Entrar</button>
+                <button id="tabCadastro" style="background: #ddd; color: var(--text-dark);">Cadastrar</button>
+            </div>
+
+            <div id="loginForm">
+                <div class="input-field">
+                    <label>E-mail</label>
+                    <input type="email" id="loginEmail" placeholder="cliente@raizes.com">
+                </div>
+                <div class="input-field">
+                    <label>Senha</label>
+                    <input type="password" id="loginSenha" placeholder="Nordeste123">
+                </div>
+                <p id="loginMsg" class="error-msg"></p>
+                <button id="btnLoginSubmit" class="btn-primary w-100">Entrar na Conta</button>
+            </div>
+
+            <div id="cadastroForm" style="display:none;">
+                <div class="input-field">
+                    <label>Nome Completo</label>
+                    <input type="text" id="cadNome" placeholder="Maria da Silva">
+                </div>
+                <div class="input-field">
+                    <label>E-mail</label>
+                    <input type="email" id="cadEmail" placeholder="maria@email.com">
+                </div>
+                <div class="input-field">
+                    <label>Senha</label>
+                    <input type="password" id="cadSenha" placeholder="******">
+                </div>
+                <div class="checkbox-group">
+                    <input type="checkbox" id="consentimentoLGPD">
+                    <label for="consentimentoLGPD">Aceito o tratamento de dados para Fidelidade (LGPD).</label>
+                </div>
+                <p id="cadMsg" class="error-msg"></p>
+                <button id="btnCadastroSubmit" class="btn-primary w-100">Criar Conta</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="paymentModal" class="modal-overlay">
+        <div class="modal-content text-center">
+            <div class="spinner"></div>
+            <h3 id="paymentMsg" style="margin-top: 15px;">Processando transação...</h3>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

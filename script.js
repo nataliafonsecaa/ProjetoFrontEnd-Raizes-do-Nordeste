@@ -20,25 +20,33 @@ let currentScreen = "home";
 // Dados de usuários (mock)
 let usuarios = [{ email: "cliente@raizes.com", senha: "Nordeste123", nome: "Cliente Raízes", pontos: 120 }];
 
-// LGPD
+// ======================= LGPD =======================
 if (!localStorage.getItem("lgpdConsent")) {
     document.getElementById("lgpdModal").classList.add("active");
 }
 
-document.getElementById("aceitarCookies").onclick = () => { localStorage.setItem("lgpdConsent","aceito"); fecharLGPD(); };
-document.getElementById("rejeitarCookies").onclick = () => { localStorage.setItem("lgpdConsent","rejeitado"); fecharLGPD(); };
-function fecharLGPD() { document.getElementById("lgpdModal").classList.remove("active"); }
-document.getElementById("politicaLink").onclick = (e) => { e.preventDefault(); alert("Política de Privacidade simulada: seus dados são usados apenas para fidelidade."); };
+document.getElementById("aceitarCookies").onclick = () => { 
+    localStorage.setItem("lgpdConsent","aceito"); 
+    fecharLGPD(); 
+};
+document.getElementById("rejeitarCookies").onclick = () => { 
+    localStorage.setItem("lgpdConsent","rejeitado"); 
+    fecharLGPD(); 
+};
+function fecharLGPD() { 
+    document.getElementById("lgpdModal").classList.remove("active"); 
+}
+document.getElementById("politicaLink").onclick = (e) => { 
+    e.preventDefault(); 
+    alert("Política de Privacidade simulada: seus dados são usados apenas para fidelidade."); 
+};
 
-// ---------- RENDER E UI ----------
+// ======================= FUNÇÕES DE UI =======================
 function atualizarUIComUsuario() {
     const btnNavLogin = document.getElementById("openLoginModalBtn");
-    
     if(usuarioLogado){
         pontosFidelidade = usuarioLogado.pontos;
         document.getElementById("pontosUsuario").innerText = pontosFidelidade;
-        
-        // Exibe o primeiro nome do usuário na Navbar
         const primeiroNome = usuarioLogado.nome.split(" ")[0];
         btnNavLogin.innerHTML = `👤 Olá, ${primeiroNome}`;
     } else {
@@ -52,17 +60,16 @@ function atualizarUIComUsuario() {
 function renderCardapioPorUnidade(unidade) {
     const container = document.getElementById("cardapioDinamico");
     const produtosFiltrados = produtosMock.filter(p => p.unidadeDisponivel.includes(unidade));
-    
-    if(produtosFiltrados.length === 0) { container.innerHTML = "<p>Nenhum produto nesta unidade.</p>"; return; }
-    
+    if(produtosFiltrados.length === 0) { 
+        container.innerHTML = "<p>Nenhum produto nesta unidade.</p>"; 
+        return; 
+    }
     container.innerHTML = produtosFiltrados.map(prod => {
         let disponivelNaUnidade = prod.disponivel;
         let badgeHtml = "";
         if(!disponivelNaUnidade) badgeHtml = "<span class='badge badge-indisponivel'>❌ Indisponível</span>";
         else if(prod.sazonal) badgeHtml = "<span class='badge badge-sazonal'>🌽 Sazonal (Junino)</span>";
-        
         const disabledAttr = (!disponivelNaUnidade) ? "disabled" : "";
-        
         return `
         <div class="produto-item">
             <div style="font-weight:bold;">${prod.nome}</div>
@@ -93,16 +100,13 @@ function adicionarAoCarrinho(id, nome, preco) {
 
 function renderCarrinho() {
     const container = document.getElementById("carrinhoLista");
-    
     if(carrinho.length === 0) { 
         container.innerHTML = "<p>🛍️ Carrinho vazio. Adicione produtos do cardápio!</p>"; 
         document.getElementById("totalCarrinho").innerHTML = `Total: R$ 0,00`; 
         return; 
     }
-    
     let html = `<ul style="list-style:none;">`;
     let subtotal = 0;
-    
     carrinho.forEach((item, idx) => {
         const totalItem = item.preco * item.quantidade;
         subtotal += totalItem;
@@ -117,10 +121,8 @@ function renderCarrinho() {
     });
     html += `</ul>`;
     container.innerHTML = html;
-    
     let totalFinal = subtotal - descontoAplicado;
     if(totalFinal < 0) totalFinal = 0;
-    
     document.getElementById("totalCarrinho").innerHTML = `Subtotal: R$ ${subtotal.toFixed(2).replace('.', ',')} 
     ${descontoAplicado > 0 ? `<br>Desconto Fidelidade: -R$ ${descontoAplicado.toFixed(2).replace('.', ',')}` : ""}
     <br><strong style="font-size:1.2rem; color:var(--laranja-queimado)">Total a Pagar: R$ ${totalFinal.toFixed(2).replace('.', ',')}</strong>`;
@@ -135,7 +137,6 @@ function renderCarrinho() {
             renderCarrinho();
         });
     });
-
     document.querySelectorAll(".removerItem").forEach(btn => {
         btn.addEventListener("click", () => {
             const idx = parseInt(btn.dataset.idx);
@@ -145,20 +146,16 @@ function renderCarrinho() {
     });
 }
 
-// ---------- INTERAÇÕES DE FIDELIDADE ----------
+// ======================= FIDELIDADE =======================
 document.getElementById("aplicarDescontoBtn").addEventListener("click", () => {
     if(!usuarioLogado) { alert("Faça login para resgatar pontos!"); return; }
-    
     const select = document.getElementById("resgateSelect");
     const pontosReq = parseInt(select.value);
-    
     if(!pontosReq || pontosReq === 0) { alert("Selecione um benefício válido"); return; }
-    
     let descontoValor = 0;
     if(pontosReq === 50) descontoValor = 5;
     else if(pontosReq === 100) descontoValor = 12;
     else if(pontosReq === 200) descontoValor = 30;
-    
     if(pontosFidelidade >= pontosReq) {
         pontosFidelidade -= pontosReq;
         usuarioLogado.pontos = pontosFidelidade;
@@ -171,7 +168,7 @@ document.getElementById("aplicarDescontoBtn").addEventListener("click", () => {
     }
 });
 
-// ---------- OPÇÕES DE PAGAMENTO ----------
+// ======================= PAGAMENTO (PIX) =======================
 document.getElementById("formaPagamento").addEventListener("change", (e) => {
     const pixContainer = document.getElementById("pixContainer");
     if(e.target.value === "pix") {
@@ -181,7 +178,46 @@ document.getElementById("formaPagamento").addEventListener("change", (e) => {
     }
 });
 
-// ---------- FLUXO DE PAGAMENTO E STATUS AUTOMÁTICO ----------
+// ======================= STEPPER (sem horários, só classes) =======================
+function atualizarStepperUI(stepAtual) {
+    const steps = document.querySelectorAll("#stepperPedido .step");
+    steps.forEach((step, idx) => {
+        const stepNum = idx + 1;
+        step.classList.remove("active", "completed");
+        if(stepNum < stepAtual) {
+            step.classList.add("completed");
+        } else if (stepNum === stepAtual) {
+            step.classList.add("active");
+        }
+    });
+}
+
+function iniciarFluxoAutomaticoPedido() {
+    // Esconde o carrinho e mostra o stepper
+    document.getElementById("cartContent").style.display = "none";
+    document.getElementById("statusContent").style.display = "block";
+    
+    // Etapa 1: Recebido
+    atualizarStepperUI(1);
+    document.getElementById("statusMsg").innerText = "Pedido recebido com sucesso! A cozinha já foi notificada.";
+    
+    setTimeout(() => {
+        atualizarStepperUI(2);
+        document.getElementById("statusMsg").innerText = "Seu pedido está em preparação. Cheirinho de comida boa no ar!";
+        setTimeout(() => {
+            atualizarStepperUI(3);
+            document.getElementById("statusMsg").innerHTML = "<strong>Pronto para retirada! 🎉</strong> Pode vir buscar sua delícia nordestina.";
+            // Reseta após 10 segundos
+            setTimeout(() => {
+                document.getElementById("cartContent").style.display = "flex";
+                document.getElementById("statusContent").style.display = "none";
+                atualizarStepperUI(0);
+            }, 10000);
+        }, 5000);
+    }, 4000);
+}
+
+// ======================= FLUXO DE PAGAMENTO =======================
 document.getElementById("finalizarCompraBtn").addEventListener("click", () => {
     if(!usuarioLogado) { alert("Você precisa estar logado para finalizar!"); return; }
     if(carrinho.length === 0) { alert("Adicione itens ao carrinho primeiro."); return; }
@@ -193,107 +229,67 @@ document.getElementById("finalizarCompraBtn").addEventListener("click", () => {
     modalPag.classList.add("active");
     msgP.innerText = `Processando pagamento via ${formaPagto}...`;
     
-    // Simula API de pagamento
     setTimeout(() => {
         msgP.innerText = "✅ Pagamento aprovado! Preparando seu pedido...";
-        
         setTimeout(() => {
             modalPag.classList.remove("active");
             
-            // Lógica Pós-Pagamento
+            // Calcula pontos ganhos
             const totalCompra = carrinho.reduce((acc, i) => acc + (i.preco * i.quantidade), 0) - descontoAplicado;
             const pontosGanhos = Math.floor(totalCompra);
-            
             usuarioLogado.pontos += pontosGanhos;
             pontosFidelidade = usuarioLogado.pontos;
             
+            // Limpa carrinho e descontos
             carrinho = [];
             descontoAplicado = 0;
             document.getElementById("descontoInfo").innerHTML = "";
             atualizarUIComUsuario();
             
-            // Inicia o Stepper Automático
+            // Inicia o Stepper
             iniciarFluxoAutomaticoPedido();
         }, 1500);
     }, 2000);
 });
 
-function iniciarFluxoAutomaticoPedido() {
-    // Esconde o layout do carrinho e mostra o Stepper
-    document.getElementById("cartContent").style.display = "none";
-    document.getElementById("statusContent").style.display = "block";
-    
-    // Etapa 1: Recebido
-    atualizarStepperUI(1);
-    document.getElementById("statusMsg").innerText = "Pedido recebido com sucesso! A cozinha já foi notificada.";
-
-    // Passa para Etapa 2 (Em Preparação) após 4 segundos
-    setTimeout(() => {
-        atualizarStepperUI(2);
-        document.getElementById("statusMsg").innerText = "Seu pedido está em preparação. Cheirinho de comida boa no ar!";
-        
-        // Passa para Etapa 3 (Pronto) após mais 5 segundos
-        setTimeout(() => {
-            atualizarStepperUI(3);
-            document.getElementById("statusMsg").innerHTML = "<strong>Pronto para retirada! 🎉</strong> Pode vir buscar sua delícia nordestina.";
-            
-            // Reseta a interface após 10 segundos para permitir nova compra
-            setTimeout(() => {
-                document.getElementById("cartContent").style.display = "flex";
-                document.getElementById("statusContent").style.display = "none";
-                atualizarStepperUI(0); // Limpa o visual
-            }, 10000);
-
-        }, 5000);
-    }, 4000);
-}
-
-function atualizarStepperUI(stepAtual) {
-    const steps = document.querySelectorAll("#stepperPedido .step");
-    steps.forEach((step, idx) => {
-        const stepNum = idx + 1;
-        
-        // Limpa classes anteriores
-        step.classList.remove("active", "completed");
-        
-        if(stepNum < stepAtual) {
-            // Se já passou, fica verde (completed)
-            step.classList.add("completed");
-        } else if (stepNum === stepAtual) {
-            // Se é o atual, fica laranja e pulsa (active)
-            step.classList.add("active");
-        }
-    });
-}
-
-// ---------- LOGIN E CADASTRO ----------
+// ======================= LOGIN E CADASTRO =======================
 const loginModal = document.getElementById("loginModal");
-
-// Se clicar em Login na Nav, e não estiver logado, abre modal.
 document.getElementById("openLoginModalBtn").onclick = () => {
     if(!usuarioLogado) loginModal.classList.add("active");
 };
-
 document.getElementById("closeLoginModal").onclick = () => loginModal.classList.remove("active");
 
-const tabLogin = document.getElementById("tabLogin"), tabCadastro = document.getElementById("tabCadastro");
-const loginDiv = document.getElementById("loginForm"), cadastroDiv = document.getElementById("cadastroForm");
+const tabLogin = document.getElementById("tabLogin");
+const tabCadastro = document.getElementById("tabCadastro");
+const loginDiv = document.getElementById("loginForm");
+const cadastroDiv = document.getElementById("cadastroForm");
 
-tabLogin.onclick = () => { loginDiv.style.display = "block"; cadastroDiv.style.display = "none"; tabLogin.style.background = "var(--laranja-queimado)"; tabLogin.style.color = "white"; tabCadastro.style.background = "#ddd"; tabCadastro.style.color = "var(--text-dark)"; };
-tabCadastro.onclick = () => { loginDiv.style.display = "none"; cadastroDiv.style.display = "block"; tabCadastro.style.background = "var(--laranja-queimado)"; tabCadastro.style.color = "white"; tabLogin.style.background = "#ddd"; tabLogin.style.color = "var(--text-dark)"; };
+tabLogin.onclick = () => { 
+    loginDiv.style.display = "block"; 
+    cadastroDiv.style.display = "none"; 
+    tabLogin.style.background = "var(--laranja-queimado)"; 
+    tabLogin.style.color = "white"; 
+    tabCadastro.style.background = "#ddd"; 
+    tabCadastro.style.color = "var(--text-dark)"; 
+};
+tabCadastro.onclick = () => { 
+    loginDiv.style.display = "none"; 
+    cadastroDiv.style.display = "block"; 
+    tabCadastro.style.background = "var(--laranja-queimado)"; 
+    tabCadastro.style.color = "white"; 
+    tabLogin.style.background = "#ddd"; 
+    tabLogin.style.color = "var(--text-dark)"; 
+};
 
 document.getElementById("btnLoginSubmit").onclick = () => {
     const email = document.getElementById("loginEmail").value;
     const senha = document.getElementById("loginSenha").value;
     const user = usuarios.find(u => u.email === email && u.senha === senha);
-    
     if(user){
         usuarioLogado = user;
         document.getElementById("loginMsg").innerText = "";
         loginModal.classList.remove("active");
         atualizarUIComUsuario();
-        
-        // Redireciona para o cardápio após o login
         mostrarScreen("cardapio");
     } else {
         document.getElementById("loginMsg").innerText = "E-mail ou senha inválidos";
@@ -305,51 +301,44 @@ document.getElementById("btnCadastroSubmit").onclick = () => {
     const email = document.getElementById("cadEmail").value;
     const senha = document.getElementById("cadSenha").value;
     const consent = document.getElementById("consentimentoLGPD").checked;
-    
     if(!nome || !email || !senha){ document.getElementById("cadMsg").innerText = "Preencha todos os campos."; return; }
     if(!consent){ document.getElementById("cadMsg").innerText = "Você precisa aceitar a LGPD e o programa de fidelidade."; return; }
-    
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if(!emailRegex.test(email)){ document.getElementById("cadMsg").innerText = "E-mail inválido."; return; }
     if(senha.length < 6 || !/\d/.test(senha)){ document.getElementById("cadMsg").innerText = "Senha fraca: mínimo 6 caracteres e um número."; return; }
     if(usuarios.find(u=>u.email===email)){ document.getElementById("cadMsg").innerText = "E-mail já cadastrado."; return; }
-    
     const novoUsuario = { email, senha, nome, pontos: 50 };
     usuarios.push(novoUsuario);
     usuarioLogado = novoUsuario;
-    
     loginModal.classList.remove("active");
     atualizarUIComUsuario();
     alert(`Bem-vindo ${nome}! Você ganhou 50 pontos de boas-vindas.`);
-    
-    // Redireciona para o cardápio
     mostrarScreen("cardapio");
 };
 
-// ---------- NAVEGAÇÃO ENTRE TELAS (SPA) ----------
+// ======================= NAVEGAÇÃO SPA =======================
 function mostrarScreen(screenId){
     document.querySelectorAll(".screen").forEach(s => s.classList.remove("active-screen"));
     document.getElementById(`${screenId}Screen`).classList.add("active-screen");
     currentScreen = screenId;
-    
     if(screenId === "cardapio"){
         const unidade = document.getElementById("unidadeSelect").value;
         renderCardapioPorUnidade(unidade);
     }
     if(screenId === "carrinho") renderCarrinho();
-    
     window.scrollTo(0, 0);
 }
 
 document.querySelectorAll(".nav-item").forEach(btn => {
     btn.addEventListener("click", () => {
-        mostrarScreen(btn.dataset.nav);
+        const navTo = btn.dataset.nav;
+        if(navTo) mostrarScreen(navTo);
     });
 });
 
 document.getElementById("unidadeSelect").addEventListener("change", (e) => renderCardapioPorUnidade(e.target.value));
 
-// ---------- INICIALIZAÇÃO ----------
+// ======================= INICIALIZAÇÃO =======================
 function renderHomeDestaques(){
     const destaques = produtosMock.slice(0,3);
     const containerHome = document.getElementById("destaquesHome");
@@ -362,130 +351,4 @@ function renderHomeDestaques(){
 
 renderHomeDestaques();
 atualizarUIComUsuario();
-
-// Variável global para guardar o pedido atual e exibir na nota
-let ultimoPedido = [];
-
-// Função auxiliar para capturar a hora atual (ex: "14:30")
-function obterHoraAtual() {
-    const agora = new Date();
-    return agora.getHours().toString().padStart(2, '0') + ':' + agora.getMinutes().toString().padStart(2, '0');
-}
-
-// ---------- FLUXO DE PAGAMENTO E STATUS AUTOMÁTICO ----------
-document.getElementById("finalizarCompraBtn").addEventListener("click", () => {
-    if(!usuarioLogado) { alert("Você precisa estar logado para finalizar!"); return; }
-    if(carrinho.length === 0) { alert("Adicione itens ao carrinho primeiro."); return; }
-
-    const formaPagto = document.getElementById("formaPagamento").options[document.getElementById("formaPagamento").selectedIndex].text;
-    const modalPag = document.getElementById("paymentModal");
-    const msgP = document.getElementById("paymentMsg");
-    
-    modalPag.classList.add("active");
-    msgP.innerText = `Processando pagamento via ${formaPagto}...`;
-    
-    // Simula API de pagamento
-    setTimeout(() => {
-        msgP.innerText = "✅ Pagamento aprovado! Preparando seu pedido...";
-        
-        setTimeout(() => {
-            modalPag.classList.remove("active");
-            
-            // 1. Salva o carrinho atual em ultimoPedido antes de limpar
-            ultimoPedido = [...carrinho];
-            renderResumoItensPedido(); // Preenche o cartão branco
-            
-            // 2. Lógica Pós-Pagamento
-            const totalCompra = carrinho.reduce((acc, i) => acc + (i.preco * i.quantidade), 0) - descontoAplicado;
-            const pontosGanhos = Math.floor(totalCompra);
-            
-            usuarioLogado.pontos += pontosGanhos;
-            pontosFidelidade = usuarioLogado.pontos;
-            
-            carrinho = [];
-            descontoAplicado = 0;
-            document.getElementById("descontoInfo").innerHTML = "";
-            atualizarUIComUsuario();
-            
-            // 3. Inicia o Stepper Automático
-            iniciarFluxoAutomaticoPedido();
-        }, 1500);
-    }, 2000);
-});
-
-// Preenche a lista do cartão branco "Itens do Pedido"
-function renderResumoItensPedido() {
-    const container = document.getElementById("orderSummaryList");
-    let html = '';
-    
-    ultimoPedido.forEach(item => {
-        // Tenta achar a imagem mockada ou usa um emoji padrão de prato
-        const produtoMock = produtosMock.find(p => p.id === item.id);
-        const icone = produtoMock && produtoMock.imagem ? produtoMock.imagem : "🍲";
-        
-        html += `
-            <div class="order-item-row">
-                <div class="order-item-info">
-                    <span>${icone}</span>
-                    <span>${item.nome} &times; ${item.quantidade}</span>
-                </div>
-                <div class="order-item-price">
-                    R$ ${(item.preco * item.quantidade).toFixed(2).replace('.', ',')}
-                </div>
-            </div>
-        `;
-    });
-    
-    container.innerHTML = html;
-}
-
-function iniciarFluxoAutomaticoPedido() {
-    // Esconde o layout do carrinho e mostra a tela de Status
-    document.getElementById("cartContent").style.display = "none";
-    document.getElementById("statusContent").style.display = "block";
-    
-    // Limpa horários antigos
-    document.getElementById("time1").innerText = "--:--";
-    document.getElementById("time2").innerText = "--:--";
-    document.getElementById("time3").innerText = "--:--";
-    
-    // Etapa 1: Recebido
-    atualizarStepperUI(1);
-
-    // Passa para Etapa 2 (Em Preparação) após 3 segundos
-    setTimeout(() => {
-        atualizarStepperUI(2);
-        
-        // Passa para Etapa 3 (Pronto) após mais 4 segundos
-        setTimeout(() => {
-            atualizarStepperUI(3);
-            
-            // Reseta para a tela de carrinho limpa após 15 segundos (para nova compra)
-            setTimeout(() => {
-                document.getElementById("cartContent").style.display = "flex";
-                document.getElementById("statusContent").style.display = "none";
-            }, 15000);
-
-        }, 4000);
-    }, 3000);
-}
-
-function atualizarStepperUI(stepAtual) {
-    const steps = document.querySelectorAll("#stepperPedido .step");
-    
-    steps.forEach((step, idx) => {
-        const stepNum = idx + 1;
-        
-        // Remove classes
-        step.classList.remove("active", "completed");
-        
-        if(stepNum < stepAtual) {
-            // Se já passou, fica verde com texto riscado
-            step.classList.add("completed");
-        } else if (stepNum === stepAtual) {
-            // Se é o atual, fica laranja e recebe o horário atualizado
-            step.classList.add("active");
-            document.getElementById(`time${stepNum}`).innerText = obterHoraAtual();
-        }
-    });
-}
+mostrarScreen("home");

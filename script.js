@@ -1,14 +1,14 @@
 // ---------- MOCK DATA ----------
 const produtosMock = [
-    { id: 1, nome: "Tapioca de Carne de Sol", preco: 25.9, unidadeDisponivel: ["Tupã","Marília","Presidente Prudente"], disponivel: true, sazonal: false, imagem: "🌮", imagem:"img/bolo-de-macaxeira-com-coco.jpg"},
-    { id: 2, nome: "Cuscuz Recheado (Queijo Coalho)", preco: 29.5, unidadeDisponivel: ["Tupã","Marília"], disponivel: true, sazonal: false,  imagem:"img/bolo-de-milho.webp" },
-    { id: 3, nome: "Bolo de Macaxeira com Coco", preco: 12.0, unidadeDisponivel: ["Tupã","Marília","Presidente Prudente"], disponivel: true, sazonal: false,  imagem:"img/bolo-de-rolo.jpg" },
-    { id: 4, nome: "Caldo de Mocotó", preco: 26.0, unidadeDisponivel: ["Tupã"], disponivel: true, sazonal: false, imagem:"img/buchada-de-bode.jpg" },
-    { id: 5, nome: "Carne de Sol com Macaxeira", preco: 45.0, unidadeDisponivel: ["Tupã","Marília","Presidente Prudente"], disponivel: true, sazonal: false,imagem:"img/caldo-de-mocoto.webp" },
-    { id: 6, nome: "Bolo de Milho (Período Junino)", preco: 10.9, unidadeDisponivel: ["Marília","Presidente Prudente"], disponivel: true, sazonal: true, badge: "Sazonal - Junino", imagem:"img/carne-de-sol-com-macaxeira.jpg" },
-    { id: 7, nome: "Bolo de Rolo", preco: 15.5, unidadeDisponivel: ["Tupã", "Marília"], disponivel: false, sazonal: false, imagem:"img/cuscuz-queijo.jpg" },
-    { id: 8, nome: "Sarapatel", preco: 55.0, unidadeDisponivel: ["Tupã","Marília"], disponivel: true, sazonal: false, imagem:"img/sarapatel.webp" },
-    { id:9, nome: "Buchada de Bode", preco: 65.5, unidadeDisponivel: ["Presidente Prudente", "Tupã", "Marília"], disponivel: true, sazonal: false, imagem:"img/tapioca-de-carne-seca.webp" }
+    { id: 1, nome: "Caldo de Mocotó", preco: 45.0, unidadeDisponivel: ["Tupã","Marília","Presidente Prudente"], disponivel: true, sazonal: false,imagem:"img/caldo-de-mocoto.webp" },
+    { id: 2, nome: "Carne de Sol com Macaxeira", preco: 10.9, unidadeDisponivel: ["Marília","Presidente Prudente"], disponivel: true, sazonal: true, badge: "Sazonal - Junino", imagem:"img/carne-de-sol-com-macaxeira.jpg" },
+    { id: 3, nome: "Cuscuz com Queijo Coalho", preco: 15.5, unidadeDisponivel: ["Tupã", "Marília"], disponivel: true, sazonal: false, imagem:"img/cuscuz-queijo.jpg" },
+    { id: 4, nome: "Sarapatel", preco: 55.0, unidadeDisponivel: ["Tupã","Marília"], disponivel: true, sazonal: false, imagem:"img/sarapatel.webp" },
+    { id:5, nome: "Tapioca de Carne Seca", preco: 65.5, unidadeDisponivel: ["Presidente Prudente", "Tupã", "Marília"], disponivel: true, sazonal: false, imagem:"img/tapioca-de-carne-seca.webp" },
+    { id: 6, nome: "Bolo de Macaxeira com Coco", preco: 25.9, unidadeDisponivel: ["Tupã","Marília","Presidente Prudente"], disponivel: true, sazonal: false, imagem: "🌮", imagem:"img/bolo-de-macaxeira-com-coco.jpg"},
+    { id: 7, nome: "Bolo de Milho (Período Junino)", preco: 29.5, unidadeDisponivel: ["Tupã","Marília"], disponivel: true, sazonal: false,  imagem:"img/bolo-de-milho.webp" },
+    { id: 8, nome: "Bolo de Rolo", preco: 12.0, unidadeDisponivel: ["Tupã","Marília","Presidente Prudente"], disponivel: false, sazonal: false,  imagem:"img/bolo-de-rolo.jpg" },
+    { id: 9, nome: "Buchada de Bode", preco: 26.0, unidadeDisponivel: ["Tupã"], disponivel: true, sazonal: false, imagem:"img/buchada-de-bode.jpg" }
 ];
 
 // Estado da aplicação
@@ -349,7 +349,7 @@ function renderHomeDestaques(){
     const destaques = produtosMock.slice(0,4);
     const containerHome = document.getElementById("destaquesHome");
     containerHome.innerHTML = destaques.map(p => {
-        const imgSrc = p.imagem ? p.imagem : 'img/bolo-de-rolo.jpg';
+        const imgSrc = p.imagem ? p.imagem : 'img/';
         
         return `
         <div class="produto-item">

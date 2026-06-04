@@ -1,13 +1,14 @@
 // ---------- MOCK DATA ----------
 const produtosMock = [
-    { id: 1, nome: "Tapioca de Carne de Sol", preco: 18.9, unidadeDisponivel: ["Recife","Caruaru","São Paulo"], disponivel: true, sazonal: false, imagem: "🌮" },
-    { id: 2, nome: "Cuscuz Recheado (Queijo Coalho)", preco: 16.5, unidadeDisponivel: ["Recife","Caruaru"], disponivel: true, sazonal: false },
-    { id: 3, nome: "Bolo de Macaxeira com Coco", preco: 12.0, unidadeDisponivel: ["Recife","Caruaru","São Paulo"], disponivel: true, sazonal: false },
-    { id: 4, nome: "Caldo de Mocotó", preco: 14.0, unidadeDisponivel: ["Recife"], disponivel: false, sazonal: false, msgIndisponivel: "Indisponível" },
-    { id: 5, nome: "Paçoca de Carne com Pirão", preco: 22.0, unidadeDisponivel: ["Caruaru","São Paulo"], disponivel: true, sazonal: false },
-    { id: 6, nome: "Bolo de Milho (Período Junino)", preco: 9.9, unidadeDisponivel: ["Recife","Caruaru","São Paulo"], disponivel: true, sazonal: true, badge: "Sazonal - Junino" },
-    { id: 7, nome: "Cocada Nordestina", preco: 7.5, unidadeDisponivel: ["São Paulo"], disponivel: true, sazonal: false },
-    { id: 8, nome: "Arrumadinho", preco: 24.0, unidadeDisponivel: ["Recife","Caruaru"], disponivel: false, sazonal: false }
+    { id: 1, nome: "Tapioca de Carne de Sol", preco: 25.9, unidadeDisponivel: ["Tupã","Marília","Presidente Prudente"], disponivel: true, sazonal: false, imagem: "🌮", imagem:"img/bolo-de-macaxeira-com-coco.jpg"},
+    { id: 2, nome: "Cuscuz Recheado (Queijo Coalho)", preco: 29.5, unidadeDisponivel: ["Tupã","Marília"], disponivel: true, sazonal: false,  imagem:"img/bolo-de-milho.webp" },
+    { id: 3, nome: "Bolo de Macaxeira com Coco", preco: 12.0, unidadeDisponivel: ["Tupã","Marília","Presidente Prudente"], disponivel: true, sazonal: false,  imagem:"img/bolo-de-rolo.jpg" },
+    { id: 4, nome: "Caldo de Mocotó", preco: 26.0, unidadeDisponivel: ["Tupã"], disponivel: true, sazonal: false, imagem:"img/buchada-de-bode.jpg" },
+    { id: 5, nome: "Carne de Sol com Macaxeira", preco: 45.0, unidadeDisponivel: ["Tupã","Marília","Presidente Prudente"], disponivel: true, sazonal: false,imagem:"img/caldo-de-mocoto.webp" },
+    { id: 6, nome: "Bolo de Milho (Período Junino)", preco: 10.9, unidadeDisponivel: ["Marília","Presidente Prudente"], disponivel: true, sazonal: true, badge: "Sazonal - Junino", imagem:"img/carne-de-sol-com-macaxeira.jpg" },
+    { id: 7, nome: "Bolo de Rolo", preco: 15.5, unidadeDisponivel: ["Tupã", "Marília"], disponivel: false, sazonal: false, imagem:"img/cuscuz-queijo.jpg" },
+    { id: 8, nome: "Sarapatel", preco: 55.0, unidadeDisponivel: ["Tupã","Marília"], disponivel: true, sazonal: false, imagem:"img/sarapatel.webp" },
+    { id:9, nome: "Buchada de Bode", preco: 65.5, unidadeDisponivel: ["Presidente Prudente", "Tupã", "Marília"], disponivel: true, sazonal: false, imagem:"img/tapioca-de-carne-seca.webp" }
 ];
 
 // Estado da aplicação
@@ -41,7 +42,6 @@ document.getElementById("politicaLink").onclick = (e) => {
     alert("Política de Privacidade simulada: seus dados são usados apenas para fidelidade."); 
 };
 
-// ======================= FUNÇÕES DE UI =======================
 function atualizarUIComUsuario() {
     const btnNavLogin = document.getElementById("openLoginModalBtn");
     if(usuarioLogado){
@@ -52,7 +52,7 @@ function atualizarUIComUsuario() {
     } else {
         pontosFidelidade = 0;
         document.getElementById("pontosUsuario").innerText = 0;
-        btnNavLogin.innerHTML = `⭐ Login`;
+        btnNavLogin.innerHTML = `Login`;
     }
     renderCarrinho();
 }
@@ -70,11 +70,17 @@ function renderCardapioPorUnidade(unidade) {
         if(!disponivelNaUnidade) badgeHtml = "<span class='badge badge-indisponivel'>❌ Indisponível</span>";
         else if(prod.sazonal) badgeHtml = "<span class='badge badge-sazonal'>🌽 Sazonal (Junino)</span>";
         const disabledAttr = (!disponivelNaUnidade) ? "disabled" : "";
+        const imgSrc = prod.imagem ? prod.imagem : 'img/placeholder.png';
         return `
         <div class="produto-item">
-            <div style="font-weight:bold;">${prod.nome}</div>
-            <div style="margin-bottom:10px;">R$ ${prod.preco.toFixed(2).replace('.', ',')}</div>
-            ${badgeHtml}
+            <div class="produto-imagem-container">
+                <img src="${imgSrc}" alt="${prod.nome}" class="produto-img">
+            </div>
+            <div class="produto-info">
+                <div style="font-weight:bold;">${prod.nome}</div>
+                <div style="margin-bottom:10px; color: var(--laranja-queimado); font-weight: 600;">R$ ${prod.preco.toFixed(2).replace('.', ',')}</div>
+                ${badgeHtml}
+            </div>
             <button class="addCarrinhoBtn btn-primary" data-id="${prod.id}" data-nome="${prod.nome}" data-preco="${prod.preco}" ${disabledAttr}>Adicionar</button>
         </div>
         `;
@@ -340,14 +346,27 @@ document.getElementById("unidadeSelect").addEventListener("change", (e) => rende
 
 // ======================= INICIALIZAÇÃO =======================
 function renderHomeDestaques(){
-    const destaques = produtosMock.slice(0,3);
+    const destaques = produtosMock.slice(0,4);
     const containerHome = document.getElementById("destaquesHome");
-    containerHome.innerHTML = destaques.map(p => `
+    containerHome.innerHTML = destaques.map(p => {
+        const imgSrc = p.imagem ? p.imagem : 'img/bolo-de-rolo.jpg';
+        
+        return `
         <div class="produto-item">
-            <strong>${p.nome}</strong><br>R$ ${p.preco.toFixed(2).replace('.', ',')}
+            <div class="produto-imagem-container">
+                <img src="${imgSrc}" alt="${p.nome}" class="produto-img">
+            </div>
+            <div class="produto-info">
+                <strong>${p.nome}</strong><br>
+                <span style="color: var(--laranja-queimado); font-weight: 600;">
+                    R$ ${p.preco.toFixed(2).replace('.', ',')}
+                </span>
+            </div>
         </div>
-    `).join('');
+        `;
+    }).join('');
 }
+
 
 renderHomeDestaques();
 atualizarUIComUsuario();

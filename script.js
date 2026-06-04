@@ -368,6 +368,7 @@ function renderHomeDestaques(){
 }
 
 
+
 renderHomeDestaques();
 atualizarUIComUsuario();
 mostrarScreen("home");

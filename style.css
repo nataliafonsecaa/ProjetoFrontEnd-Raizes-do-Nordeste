@@ -1,5 +1,5 @@
 :root {
-  --fundo-creme: #f8f8f8;
+  --fundo-creme: #ffeee6;
   --text-dark: #203f02;
   --text-light: #1e3f03;
   --laranja-queimado: #d16231;
@@ -8,9 +8,9 @@
   --bordas: #eadcd0;
   --branco: #ffffff;
   --error: #d32f2f;
-  --success: #2e7d32;
-  --font-serif: 'Playfair Display', serif;
-  --font-sans: 'Inter', sans-serif;
+  --success: #3edf46;
+  --font-serif: 'Roboto', serif;
+  --font-sans: 'Oswald', sans-serif;
 }
 
 * {
@@ -26,7 +26,7 @@ body {
   line-height: 1.5;
 }
 
-h1, h2, h3, em {
+h1, h2, h3, em, {
   font-family: var(--font-serif);
 }
 
@@ -67,12 +67,12 @@ header {
 }
 
 .logo-text strong {
-  color: #558b2f;
+  color: #365c1c;
   font-size: 1.2rem;
 }
 
 .logo-text span {
-  font-size: 0.9rem;
+  font-size: 1.2rem;
   display: block;
   color: var(--text-light);
 }
@@ -82,16 +82,18 @@ header {
   gap: 5px;
   flex-wrap: wrap;
   justify-content: center;
+  
 }
 
 .main-nav button, .user-nav button {
   background: none;
   border: none;
-  font-size: 0.95rem;
-  font-weight: 500;
+  font-size: 1rem;
+  font-weight: 600;
   color: var(--text-dark);
   padding: 8px 12px;
   cursor: pointer;
+
 }
 
 .main-nav button:hover {
@@ -129,8 +131,6 @@ header {
   margin-bottom: 40px;
 }
 
-
-
 .badge {
   display: inline-block;
   padding: 6px 14px;
@@ -139,18 +139,18 @@ header {
   font-size: 0.75rem;
   color: var(--text-light);
   margin-bottom: 15px;
-  background: #fff;
+  background:#ffeee6;
 }
 
 .hero h1 {
-  font-size: 2.2rem;
+  font-size: 3.2rem;
   line-height: 1.15;
   margin-bottom: 15px;
 }
 
 .hero p {
   color: var(--text-light);
-  font-size: 1rem;
+  font-size: 1.2rem;
   margin-bottom: 25px;
   max-width: 500px;
 }
@@ -167,13 +167,6 @@ header {
   align-items: center;
   padding: 20px;
 }
-
-
-.img-logo {
-  font-size: 70px;
-  filter: drop-shadow(0 8px 12px rgba(0, 0, 0, 0.1));
-}
-
 
 .section-title {
   text-align: center;
@@ -210,7 +203,7 @@ header {
 
 
 .produto-item {
-  background: var(--branco);
+  background:#ffeee6 ;
   padding: 20px;
   border-radius: 12px;
   border: 1px solid var(--bordas);

@@ -1,14 +1,14 @@
 // ---------- MOCK DATA ----------
 const produtosMock = [
-    { id: 1, nome: "Caldo de Mocotó", preco: 45.0, unidadeDisponivel: ["Tupã","Marília","Presidente Prudente"], disponivel: true, sazonal: false,imagem:"img/caldo-de-mocoto.webp" },
-    { id: 2, nome: "Carne de Sol com Macaxeira", preco: 10.9, unidadeDisponivel: ["Marília","Presidente Prudente"], disponivel: true, sazonal: true, badge: "Sazonal - Junino", imagem:"img/carne-de-sol-com-macaxeira.jpg" },
-    { id: 3, nome: "Cuscuz com Queijo Coalho", preco: 15.5, unidadeDisponivel: ["Tupã", "Marília"], disponivel: true, sazonal: false, imagem:"img/cuscuz-queijo.jpg" },
-    { id: 4, nome: "Sarapatel", preco: 55.0, unidadeDisponivel: ["Tupã","Marília"], disponivel: true, sazonal: false, imagem:"img/sarapatel.webp" },
-    { id:5, nome: "Tapioca de Carne Seca", preco: 65.5, unidadeDisponivel: ["Presidente Prudente", "Tupã", "Marília"], disponivel: true, sazonal: false, imagem:"img/tapioca-de-carne-seca.webp" },
-    { id: 6, nome: "Bolo de Macaxeira com Coco", preco: 25.9, unidadeDisponivel: ["Tupã","Marília","Presidente Prudente"], disponivel: true, sazonal: false, imagem: "🌮", imagem:"img/bolo-de-macaxeira-com-coco.jpg"},
-    { id: 7, nome: "Bolo de Milho (Período Junino)", preco: 29.5, unidadeDisponivel: ["Tupã","Marília"], disponivel: true, sazonal: false,  imagem:"img/bolo-de-milho.webp" },
-    { id: 8, nome: "Bolo de Rolo", preco: 12.0, unidadeDisponivel: ["Tupã","Marília","Presidente Prudente"], disponivel: false, sazonal: false,  imagem:"img/bolo-de-rolo.jpg" },
-    { id: 9, nome: "Buchada de Bode", preco: 26.0, unidadeDisponivel: ["Tupã"], disponivel: true, sazonal: false, imagem:"img/buchada-de-bode.jpg" }
+    { id: 1, nome: "Tapioca de Carne de Sol", preco: 25.9, unidadeDisponivel: ["Tupã","Marília","Presidente Prudente"], disponivel: true, sazonal: false, imagem: "🌮", imagem:"img/bolo-de-macaxeira-com-coco.jpg"},
+    { id: 2, nome: "Cuscuz Recheado (Queijo Coalho)", preco: 29.5, unidadeDisponivel: ["Tupã","Marília"], disponivel: true, sazonal: false,  imagem:"img/bolo-de-milho.webp" },
+    { id: 3, nome: "Bolo de Macaxeira com Coco", preco: 12.0, unidadeDisponivel: ["Tupã","Marília","Presidente Prudente"], disponivel: true, sazonal: false,  imagem:"img/bolo-de-rolo.jpg" },
+    { id: 4, nome: "Caldo de Mocotó", preco: 26.0, unidadeDisponivel: ["Tupã"], disponivel: true, sazonal: false, imagem:"img/buchada-de-bode.jpg" },
+    { id: 5, nome: "Carne de Sol com Macaxeira", preco: 45.0, unidadeDisponivel: ["Tupã","Marília","Presidente Prudente"], disponivel: true, sazonal: false,imagem:"img/caldo-de-mocoto.webp" },
+    { id: 6, nome: "Bolo de Milho (Período Junino)", preco: 10.9, unidadeDisponivel: ["Marília","Presidente Prudente"], disponivel: true, sazonal: true, badge: "Sazonal - Junino", imagem:"img/carne-de-sol-com-macaxeira.jpg" },
+    { id: 7, nome: "Bolo de Rolo", preco: 15.5, unidadeDisponivel: ["Tupã", "Marília"], disponivel: false, sazonal: false, imagem:"img/cuscuz-queijo.jpg" },
+    { id: 8, nome: "Sarapatel", preco: 55.0, unidadeDisponivel: ["Tupã","Marília"], disponivel: true, sazonal: false, imagem:"img/sarapatel.webp" },
+    { id:9, nome: "Buchada de Bode", preco: 65.5, unidadeDisponivel: ["Presidente Prudente", "Tupã", "Marília"], disponivel: true, sazonal: false, imagem:"img/tapioca-de-carne-seca.webp" }
 ];
 
 // Estado da aplicação
@@ -22,25 +22,103 @@ let currentScreen = "home";
 let usuarios = [{ email: "cliente@raizes.com", senha: "Nordeste123", nome: "Cliente Raízes", pontos: 120 }];
 
 // ======================= LGPD =======================
-if (!localStorage.getItem("lgpdConsent")) {
-    document.getElementById("lgpdModal").classList.add("active");
+(function iniciarLGPD() {
+    const consentimento = localStorage.getItem("lgpdConsent");
+    if (!consentimento) {
+        // Pequeno delay para o banner deslizar após o carregamento da página
+        setTimeout(() => {
+            document.getElementById("lgpdModal").classList.add("active");
+        }, 800);
+    }
+})();
+
+document.getElementById("aceitarCookies").onclick = () => {
+    localStorage.setItem("lgpdConsent", "aceito");
+    fecharLGPD();
+};
+
+document.getElementById("rejeitarCookies").onclick = () => {
+    localStorage.setItem("lgpdConsent", "rejeitado");
+    fecharLGPD();
+    // Avisa que funções de fidelidade ficarão indisponíveis
+    setTimeout(() => {
+        alert("ℹ️ Você rejeitou os cookies. O Programa de Fidelidade e algumas funcionalidades personalizadas não estarão disponíveis.");
+    }, 400);
+};
+
+function fecharLGPD() {
+    const banner = document.getElementById("lgpdModal");
+    banner.classList.remove("active");
 }
 
-document.getElementById("aceitarCookies").onclick = () => { 
-    localStorage.setItem("lgpdConsent","aceito"); 
-    fecharLGPD(); 
+document.getElementById("politicaLink").onclick = (e) => {
+    e.preventDefault();
+    const modal = document.getElementById("loginModal");
+    // Reutiliza o overlay de modal para exibir a política
+    const politicaHTML = `
+        <span id="closePoliticaModal" class="close-btn">&times;</span>
+        <h3 style="margin-bottom:16px; font-family: var(--font-serif); color: var(--laranja-queimado);">⚖️ Política de Privacidade</h3>
+        <p style="font-size:0.85rem; line-height:1.7; color: var(--text-light);">
+            <strong>Raízes do Nordeste</strong> coleta e trata seus dados pessoais com base na 
+            <strong>Lei Geral de Proteção de Dados — LGPD (Lei nº 13.709/2018)</strong>.
+        </p>
+        <br>
+        <p style="font-size:0.85rem; line-height:1.7; color: var(--text-light);">
+            <strong>Quais dados coletamos:</strong><br>
+            Nome, e-mail e senha (para autenticação); histórico de pedidos (para o programa de fidelidade); preferências de unidade (para personalização).
+        </p>
+        <br>
+        <p style="font-size:0.85rem; line-height:1.7; color: var(--text-light);">
+            <strong>Como usamos seus dados:</strong><br>
+            Para gerenciar sua conta, processar pedidos, calcular pontos de fidelidade e melhorar sua experiência. <strong>Nunca vendemos seus dados a terceiros.</strong>
+        </p>
+        <br>
+        <p style="font-size:0.85rem; line-height:1.7; color: var(--text-light);">
+            <strong>Seus direitos (LGPD):</strong><br>
+            Você pode solicitar acesso, correção ou exclusão dos seus dados a qualquer momento pelo e-mail 
+            <a href="mailto:contato@raizesdonordeste.com" style="color:var(--laranja-queimado)">contato@raizesdonordeste.com</a>.
+        </p>
+        <br>
+        <button class="btn-primary w-100" id="fecharPoliticaBtn">Entendi</button>
+    `;
+
+    const conteudo = modal.querySelector(".modal-content");
+    const htmlOriginal = conteudo.innerHTML;
+    conteudo.innerHTML = politicaHTML;
+    modal.classList.add("active");
+
+    document.getElementById("closePoliticaModal").onclick = () => {
+        modal.classList.remove("active");
+        conteudo.innerHTML = htmlOriginal;
+        reativarModal();
+    };
+    document.getElementById("fecharPoliticaBtn").onclick = () => {
+        modal.classList.remove("active");
+        conteudo.innerHTML = htmlOriginal;
+        reativarModal();
+    };
 };
-document.getElementById("rejeitarCookies").onclick = () => { 
-    localStorage.setItem("lgpdConsent","rejeitado"); 
-    fecharLGPD(); 
-};
-function fecharLGPD() { 
-    document.getElementById("lgpdModal").classList.remove("active"); 
+
+function reativarModal() {
+    // Re-vincula os eventos do modal de login após restaurar o HTML
+    document.getElementById("tabLogin").onclick = () => {
+        document.getElementById("loginForm").style.display = "block";
+        document.getElementById("cadastroForm").style.display = "none";
+        document.getElementById("tabLogin").style.background = "var(--laranja-queimado)";
+        document.getElementById("tabLogin").style.color = "white";
+        document.getElementById("tabCadastro").style.background = "#ddd";
+        document.getElementById("tabCadastro").style.color = "var(--text-dark)";
+    };
+    document.getElementById("tabCadastro").onclick = () => {
+        document.getElementById("loginForm").style.display = "none";
+        document.getElementById("cadastroForm").style.display = "block";
+        document.getElementById("tabCadastro").style.background = "var(--laranja-queimado)";
+        document.getElementById("tabCadastro").style.color = "white";
+        document.getElementById("tabLogin").style.background = "#ddd";
+        document.getElementById("tabLogin").style.color = "var(--text-dark)";
+    };
+    document.getElementById("closeLoginModal").onclick = () => loginModal.classList.remove("active");
 }
-document.getElementById("politicaLink").onclick = (e) => { 
-    e.preventDefault(); 
-    alert("Política de Privacidade simulada: seus dados são usados apenas para fidelidade."); 
-};
 
 function atualizarUIComUsuario() {
     const btnNavLogin = document.getElementById("openLoginModalBtn");
@@ -349,7 +427,7 @@ function renderHomeDestaques(){
     const destaques = produtosMock.slice(0,4);
     const containerHome = document.getElementById("destaquesHome");
     containerHome.innerHTML = destaques.map(p => {
-        const imgSrc = p.imagem ? p.imagem : 'img/';
+        const imgSrc = p.imagem ? p.imagem : 'img/bolo-de-rolo.jpg';
         
         return `
         <div class="produto-item">
@@ -372,3 +450,12 @@ function renderHomeDestaques(){
 renderHomeDestaques();
 atualizarUIComUsuario();
 mostrarScreen("home");
+// Footer: links de política e termos abrem o mesmo modal de política
+document.getElementById("footerPoliticaLink").onclick = (e) => {
+    e.preventDefault();
+    document.getElementById("politicaLink").onclick(e);
+};
+document.getElementById("footerTermosLink").onclick = (e) => {
+    e.preventDefault();
+    document.getElementById("politicaLink").onclick(e);
+};

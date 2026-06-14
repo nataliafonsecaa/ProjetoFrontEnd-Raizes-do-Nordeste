@@ -49,7 +49,7 @@ document.getElementById("rejeitarCookies").onclick = () => {
 function fecharLGPD() {
     const banner = document.getElementById("lgpdModal");
     banner.classList.remove("active");
-}
+};
 
 document.getElementById("politicaLink").onclick = (e) => {
     e.preventDefault();
@@ -77,6 +77,24 @@ document.getElementById("politicaLink").onclick = (e) => {
             <strong>Seus direitos (LGPD):</strong><br>
             Você pode solicitar acesso, correção ou exclusão dos seus dados a qualquer momento pelo e-mail 
             <a href="mailto:contato@raizesdonordeste.com" style="color:var(--laranja-queimado)">contato@raizesdonordeste.com</a>.
+        </p>
+        <br>
+        <button class="btn-primary w-100" id="fecharPoliticaBtn">Entendi</button>
+    `;
+};
+    document.getElementById("termoLink").onclick = (e) => {
+    e.preventDefault();
+    const modal = document.getElementById("loginModal");
+    // Reutiliza o overlay de modal para exibir a política
+    const politicaHTML = `
+        <span id="closePoliticaModal" class="close-btn">&times;</span>
+        <h3 style="margin-bottom:16px; font-family: var(--font-serif); color: var(--laranja-queimado);">⚖️ Termos de Uso </h3>
+        <p style="font-size:0.85rem; line-height:1.7; color: var(--text-light);">
+            Bem-vindo(a) à nossa plataforma. Ao acessar e utilizar este site, o usuário concorda com os presentes Termos de Uso e com todas as disposições aqui estabelecidas. <br>
+            O objetivo deste site é disponibilizar informações sobre produtos, serviços e funcionalidades oferecidos pela plataforma, proporcionando uma experiência prática e segura aos usuários. <br>
+            O usuário compromete-se a utilizar o sistema de forma responsável, respeitando a legislação vigente e abstendo-se de realizar qualquer atividade que possa comprometer a segurança, a integridade ou o funcionamento da plataforma.<br>
+            As informações fornecidas pelos usuários devem ser verdadeiras e atualizadas. O fornecimento de dados falsos poderá resultar na restrição ou suspensão do acesso aos serviços.
+            Ao continuar utilizando esta plataforma, o usuário declara que leu, compreendeu e concorda integralmente com estes <strong>Termos de Uso</strong>.
         </p>
         <br>
         <button class="btn-primary w-100" id="fecharPoliticaBtn">Entendi</button>

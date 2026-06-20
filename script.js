@@ -97,7 +97,7 @@ function exibirTermos() {
         <span id="closePoliticaModal" class="close-btn">&times;</span>
         <h3 style="margin-bottom:16px; font-family: var(--font-serif); color: var(--laranja-queimado);">📜 Termos de Uso</h3>
         <p style="font-size:0.85rem; line-height:1.7; color: var(--text-light);">
-            Bem-vindo(a) à nossa plataforma. Ao acessar e utilizar este site, o usuário concorda com os presentes Termos de Uso e com todas as disposições aqui estabelecidas. <br><br>
+            Bem-vindo(a) à nossa plataforma. Ao acessar e utilizar este site, o usuário concorda com os presentes <strong>Termos de Uso</strong> e com todas as disposições aqui estabelecidas. <br><br>
             O objetivo deste site é disponibilizar informações sobre produtos, serviços e funcionalidades oferecidos pela plataforma, proporcionando uma experiência prática e segura aos usuários. <br><br>
             O usuário compromete-se a utilizar o sistema de forma responsável, respeitando a legislação vigente e abstendo-se de realizar qualquer atividade que possa comprometer a segurança, a integridade ou o funcionamento da plataforma.<br><br>
             As informações fornecidas pelos usuários devem ser verdadeiras e atualizadas. O fornecimento de dados falsos poderá resultar na restrição ou suspensão do acesso aos serviços.<br><br>

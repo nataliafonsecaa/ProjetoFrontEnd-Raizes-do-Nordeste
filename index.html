@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Projeto Multidisciplinar — Raízes do Nordeste</title>
-    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Raízes do Nordeste</title>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
@@ -21,7 +21,7 @@
             <nav class="main-nav">
                 <button class="nav-item" data-nav="home">Início</button>
                 <button class="nav-item" data-nav="cardapio">Cardápio</button>
-                <button class="nav-item" data-nav="carrinho">Carrinho </button>
+                <button class="nav-item" data-nav="carrinho">Carrinho</button>
             </nav>
             <div class="user-nav">
                 <button id="openLoginModalBtn">Login</button>
@@ -30,11 +30,12 @@
     </header>
 
     <main class="container">
+        <!-- HOME -->
         <section id="homeScreen" class="screen active-screen">
             <div class="hero">
                 <div class="hero-text">
                     <span class="badge">DESDE 2010 — O SABOR DO NORDESTE NO INTERIOR DE SÃO PAULO</span>
-                    <h1>Autêntica <br><em>comida nordestina</em> <br>na sua cidade</h1>
+                    <h1>Autêntica <br /><em>comida nordestina</em> <br />na sua cidade</h1>
                     <p>Tapiocas, cuscuz, caldo de mocotó e muito mais. A tradição do sertão chegou perto de você.</p>
                     <div class="hero-buttons">
                         <button class="btn-primary nav-item" data-nav="cardapio">Ver Cardápio</button>
@@ -42,11 +43,11 @@
                     </div>
                 </div>
                 <div class="hero-image">
-                        <div class="img-logo"> 
-                            <img src="img/logo.png" alt="">
-                        </div>
+                    <div class="img-logo">
+                        <img src="img/logo.png" alt="Raízes do Nordeste" />
                     </div>
                 </div>
+            </div>
 
             <div class="highlights">
                 <div class="section-title">
@@ -57,6 +58,7 @@
             </div>
         </section>
 
+        <!-- CARDÁPIO -->
         <section id="cardapioScreen" class="screen">
             <div class="menu-header">
                 <h2>Nosso Cardápio</h2>
@@ -72,8 +74,8 @@
             <div id="cardapioDinamico" class="cards-grid"></div>
         </section>
 
+        <!-- CARRINHO -->
         <section id="carrinhoScreen" class="screen">
-            
             <div id="cartContent" class="cart-layout">
                 <div class="cart-items-section">
                     <h2>Seu Carrinho</h2>
@@ -81,7 +83,7 @@
                 </div>
                 <div class="cart-summary">
                     <h3>Resumo do Pedido</h3>
-                    
+
                     <div class="fidelidade-box">
                         <h4>Programa de Fidelidade</h4>
                         <p>Seus pontos: <strong id="pontosUsuario">0</strong> pts</p>
@@ -107,7 +109,7 @@
                             <option value="dinheiro">Dinheiro (Na Retirada)</option>
                         </select>
                         <div id="pixContainer" class="pix-area">
-                            <img src="https://api.qrserver.com/v1/create-qr-code/?size=130x130&data=ChavePixRaizesDoNordeste" alt="QR Code PIX">
+                            <img src="https://api.qrserver.com/v1/create-qr-code/?size=130x130&data=ChavePixRaizesDoNordeste" alt="QR Code PIX" />
                             <p><small>Escaneie para pagar</small></p>
                         </div>
                     </div>
@@ -119,7 +121,6 @@
             <div id="statusContent" class="status-container" style="display:none;">
                 <h2>Acompanhamento do Pedido</h2>
                 <p id="statusMsg" class="status-subtext">Processando sua solicitação...</p>
-                
                 <div id="stepperPedido" class="stepper">
                     <div class="step">
                         <div class="step-icon">📝</div>
@@ -135,15 +136,19 @@
                     </div>
                 </div>
             </div>
-
         </section>
     </main>
 
+    <!-- LGPD-->
     <div id="lgpdModal" class="lgpd-banner">
         <div class="lgpd-icon">🔒</div>
         <div class="lgpd-text">
-            <strong>Sua privacidade importa para nós</strong>
-            <p>Utilizamos cookies e dados pessoais para melhorar sua experiência, lembrar preferências e oferecer nosso <strong>Programa de Fidelidade</strong>, em conformidade com a <strong>LGPD (Lei 13.709/2018)</strong>. Saiba mais na nossa <a href="#" id="politicaLink">Política de Privacidade</a>.</p>
+            <strong>Sua privacidade é importante</strong>
+            <p>
+                Utilizamos cookies e dados pessoais para melhorar sua experiência, lembrar preferências e oferecer nosso
+                <strong>Programa de Fidelidade</strong>, em conformidade com a <strong>LGPD (Lei 13.709/2018)</strong>.
+                Saiba mais na nossa <a href="#" id="politicaBannerLink">Política de Privacidade</a>.
+            </p>
         </div>
         <div class="lgpd-buttons">
             <button id="rejeitarCookies" class="btn-outline btn-small">Rejeitar</button>
@@ -151,6 +156,7 @@
         </div>
     </div>
 
+    <!-- MODAL LOGIN / CADASTRO -->
     <div id="loginModal" class="modal-overlay">
         <div class="modal-content">
             <span id="closeLoginModal" class="close-btn">&times;</span>
@@ -162,11 +168,11 @@
             <div id="loginForm">
                 <div class="input-field">
                     <label>E-mail</label>
-                    <input type="email" id="loginEmail" placeholder="cliente@raizes.com">
+                    <input type="email" id="loginEmail" placeholder="cliente@raizes.com" />
                 </div>
                 <div class="input-field">
                     <label>Senha</label>
-                    <input type="password" id="loginSenha" placeholder="Nordeste123">
+                    <input type="password" id="loginSenha" placeholder="Nordeste123" />
                 </div>
                 <p id="loginMsg" class="error-msg"></p>
                 <button id="btnLoginSubmit" class="btn-primary w-100">Entrar na Conta</button>
@@ -175,18 +181,18 @@
             <div id="cadastroForm" style="display:none;">
                 <div class="input-field">
                     <label>Nome Completo</label>
-                    <input type="text" id="cadNome" placeholder="Maria da Silva">
+                    <input type="text" id="cadNome" placeholder="Maria da Silva" />
                 </div>
                 <div class="input-field">
                     <label>E-mail</label>
-                    <input type="email" id="cadEmail" placeholder="maria@email.com">
+                    <input type="email" id="cadEmail" placeholder="maria@email.com" />
                 </div>
                 <div class="input-field">
                     <label>Senha</label>
-                    <input type="password" id="cadSenha" placeholder="******">
+                    <input type="password" id="cadSenha" placeholder="******" />
                 </div>
                 <div class="checkbox-group">
-                    <input type="checkbox" id="consentimentoLGPD">
+                    <input type="checkbox" id="consentimentoLGPD" />
                     <label for="consentimentoLGPD">Aceito o tratamento de dados para Fidelidade (LGPD).</label>
                 </div>
                 <p id="cadMsg" class="error-msg"></p>
@@ -195,6 +201,7 @@
         </div>
     </div>
 
+    <!-- MODAL DE PAGAMENTO (PROCESSANDO) -->
     <div id="paymentModal" class="modal-overlay">
         <div class="modal-content text-center">
             <div class="spinner"></div>
@@ -202,9 +209,9 @@
         </div>
     </div>
 
+    <!-- FOOTER -->
     <footer class="footer">
         <div class="container footer-grid">
-            <!-- Coluna 1: Logo e resumo -->
             <div class="footer-col">
                 <div class="footer-logo">
                     <span class="icon-cactus">🌵</span>
@@ -214,19 +221,18 @@
                     </div>
                 </div>
                 <p class="footer-desc">
-                    A tradição do sertão nordestino agora no interior de São Paulo. 
+                    A tradição do sertão nordestino agora no interior de São Paulo.
                     Sabor, afeto e ingredientes de verdade.
                     ✉️ contato@raizesdonordeste.com
                 </p>
             </div>
 
-            <!-- Coluna 3: Contato e endereços -->
             <div class="footer-col">
                 <h4>Contato & Unidades</h4>
                 <ul class="footer-contact">
                     <li>📍 <strong>Tupã - SP (FILIAL):</strong> Avenida Tamoios, 123, Centro</li>
                     <li>📞 (14) 99999-0123</li>
-                    <li>📍 <strong>Marília - SP:</strong> Av. das Naçoes Unidas, 456, Jardim América</li>
+                    <li>📍 <strong>Marília - SP:</strong> Av. das Nações Unidas, 456, Jardim América</li>
                     <li>📞 (14) 99999-4567</li>
                     <li>📍 <strong>Presidente Prudente - SP:</strong> Rua das Flores, 789, Vila Nova</li>
                     <li>📞 (18) 99999-8910</li>
@@ -234,7 +240,6 @@
                 </ul>
             </div>
 
-            <!-- Coluna 4: Selo de segurança / newsletter simplificada -->
             <div class="footer-col">
                 <h4>Fidelidade & LGPD</h4>
                 <p>Participe do nosso programa de fidelidade e acumule pontos a cada pedido.</p>
@@ -245,7 +250,10 @@
         <div class="footer-bottom">
             <div class="container">
                 <p>&copy; 2026 Raízes do Nordeste – Todos os direitos reservados.</p>
-                <p><a href="#" id="footerPoliticaLink">Política de Privacidade</a> | <a href="#" id="termoLink">Termos de Uso</a></p>
+                <p>
+                    <a href="#" id="politicaLink">Política de Privacidade</a> |
+                    <a href="#" id="termoLink">Termos de Uso</a>
+                </p>
             </div>
         </div>
     </footer>

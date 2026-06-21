@@ -1,0 +1,2 @@
+O projeto Raízes do Nordeste é uma aplicação web desenvolvida com foco em valorizar e divulgar a cultura nordestina por meio da tecnologia. A plataforma apresenta informações sobre comidas típicas, tradições e elementos culturais da região, promovendo uma experiência visual interativa e responsiva.
+O sistema foi construído com tecnologias front-end, utilizando HTML, CSS e JavaScript, com foco em uma interface intuitiva, acessível e adaptada para diferentes dispositivos, garantindo boa usabilidade tanto em desktop quanto em mobile.
